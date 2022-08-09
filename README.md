@@ -19,3 +19,6 @@
 
 ### End time: 7 PM
 ### Actual time to complete: an hour and a half
+
+---
+![alt text](https://i.postimg.cc/hj3NrD0M/my-photo.png)
