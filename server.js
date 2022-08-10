@@ -9,10 +9,17 @@ const PORT = process.env.PORT || 3001
 
 const app = express();
 app.use(cors());
+app.use(express.json())
+
 
 // routes.
 app.get('/' , handlehome );
 app.get('/books' , handlegetbook )
+app.post('/books', createNewbook);
+app.delete('/books/:id', deletebook);
+app.put('/books/:id', updatebook);
+
+
 
 
 
@@ -26,6 +33,37 @@ function handlegetbook(req , res){
     bookmodel.find({},(error , data) =>{
         if(error)console.log('error tje data not find')
         else res.send(data);
+    })
+}
+
+function createNewbook(req, res) {
+    const {newbook} = req.body;
+    const book = new bookmodel(newbook);
+    book.save();
+    console.log(book)
+    res.status(201).json(book);
+}
+
+function deletebook(req, res) {
+    const id = req.params.id;
+    bookmodel.findByIdAndDelete(id).then(record => {
+        res.send(record);
+    }).catch(err => {
+        res.status(500).send(err.message);
+    })
+}
+
+
+
+function updatebook(req, res) {
+    const id = req.params.id;
+    const {data} = req.body;
+
+    bookmodel.findByIdAndUpdate(id, data, {new: true}).then(record => {
+        res.send(record);
+    }).catch(err => {
+        console.log(err)
+        res.status(500).send(err.message);
     })
 }
 
